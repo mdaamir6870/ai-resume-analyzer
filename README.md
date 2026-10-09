@@ -1,60 +1,56 @@
 # AI Resume Analyzer
 
-An AI-powered Resume Analyzer built using **Python, Generative AI, and Streamlit** to help candidates understand and improve their resumes.
+An AI-powered Resume Analyzer built using **Python, Generative AI, OpenAI API, and Streamlit**. The application compares a candidate's resume with a Job Description (JD) and generates structured feedback to help improve the resume.
 
-## About This Project
+## Project Overview
 
-AI Resume Analyzer is a GenAI-based application designed to compare a candidate's resume against a Job Description (JD) and provide useful insights for resume improvement.
+The AI Resume Analyzer accepts a resume in PDF or DOCX format and a Job Description as input. It uses a Large Language Model (LLM) to identify matching skills, missing skills, gaps, strengths, and improvement opportunities.
 
-The application is planned to use Python for development, an LLM for resume analysis, and Streamlit for the user interface.
+## Key Features
 
-## Project Status
-
-🚧 **In Development**
-
-## Setup Completed
-
-- Project folder created
-- Git repository initialized
-- Python virtual environment (`.venv`) created and activated
-- `.gitignore` file created and configured
-- `README.md` created
-- Initial Python imports and environment configuration added
-- Resume text extraction logic written for PDF and DOCX files
+- Upload resumes in PDF and DOCX formats.
+- Extract text from uploaded resumes.
+- Compare resume content against a Job Description.
+- Identify candidate skills, qualifications, experience, and matching skills.
+- Identify missing skills and potential gaps.
+- Generate readable resume feedback using Generative AI.
+- Display results through a Streamlit web interface.
+- Download the final report as a Markdown (`.md`) file.
+- Keep API credentials in environment variables.
 
 ## Technology Stack
 
 - **Python** — Application development
-- **Generative AI / LLM** — Resume analysis
-- **OpenAI API** — LLM integration
-- **Streamlit** — User interface
+- **Generative AI / LLM** — Resume analysis and report generation
+- **OpenAI API** — Language model integration
+- **Streamlit** — Web interface
 - **PyPDF** — PDF text extraction
 - **python-docx** — DOCX text extraction
 - **python-dotenv** — Environment variable management
+- **JSON** — Structured analysis and report data
 - **Git & GitHub** — Version control
 
-## Current Project Structure
+## Application Workflow
 
-```text
-ai-resume-analyzer/
-│
-├── .venv/          # Python virtual environment
-├── .gitignore      # Git ignore configuration
-├── README.md       # Project documentation
-└── app.py          # Main application (in development)
-```
+### Step 1: Resume Text Extraction
 
-## Current Code Functionality
+The `extract_resume_text()` function reads uploaded PDF or DOCX files and converts their text into a single string for analysis.
 
-### 1. Environment Configuration
+### Step 2: Structured Resume Analysis — LLM Call #1
 
-- Loads environment variables from `.env`
-- Reads the OpenAI API key
-- Configures the LLM model name
+The `analyze_resume()` function sends the extracted resume text and Job Description to the OpenAI API. The model returns structured JSON containing:
 
-### 2. Report Sections
+- Candidate skills
+- Candidate experience
+- Candidate qualifications
+- Required and preferred skills
+- Matching skills
+- Missing skills
+- Gaps
 
-Defines the planned sections for the resume analysis report:
+### Step 3: Final Report Generation — LLM Call #2
+
+The `generate_final_report()` function converts the structured analysis into readable feedback with five sections:
 
 - Strengths
 - Gaps
@@ -62,19 +58,68 @@ Defines the planned sections for the resume analysis report:
 - Improvement Suggestions
 - Overall Summary
 
-### 3. Resume Text Extraction
+The function also standardizes report sections into Markdown-compatible text.
 
-The `extract_resume_text()` function has been written to support:
+### Step 4: Display and Download
 
-- **PDF:** Extract text from each page using PyPDF.
-- **DOCX:** Extract text from document paragraphs using python-docx.
-- **Text Processing:** Combine extracted content into a single string and remove leading and trailing whitespace.
+The `main()` function manages the Streamlit interface, input validation, analysis workflow, error messages, and result display.
 
-*Note: The extraction code has been written; execution and testing are still pending.*
+The `create_downloadable_report()` function creates a Markdown report that users can download as `resume_analysis.md`.
+
+## Project Structure
+
+```text
+ai-resume-analyzer/
+│
+├── .venv/          # Python virtual environment
+├── .env            # API key and model configuration
+├── .gitignore      # Files excluded from Git
+├── app.py          # Main application and complete workflow
+├── README.md       # Project documentation
+└── requirements.txt # Project dependencies (if created)
+```
+
+**Note:** `.env` and `.venv/` should remain local and must not be uploaded to GitHub.
+
+## Setup and Installation
+
+### 1. Create and activate a virtual environment
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+### 2. Install dependencies
+
+```powershell
+pip install openai python-dotenv pypdf python-docx streamlit
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4o-mini
+```
+
+Replace the placeholder with your actual API key. Never share or commit your API key.
+
+### 4. Run the application
+
+```powershell
+streamlit run app.py
+```
+
+The Streamlit application will open in your browser.
 
 ## Git Ignore Configuration
 
-The following entries are configured in `.gitignore`:
+The `.gitignore` file should contain:
 
 ```gitignore
 .venv/
@@ -84,25 +129,20 @@ __pycache__/
 .vscode/
 ```
 
-### Purpose
+This prevents local environment files, API credentials, Python cache files, and editor settings from being tracked by Git.
 
-- `.venv/` — Local Python virtual environment
-- `.env` — API keys and secret credentials
-- `__pycache__/` — Python cache files
-- `*.pyc` — Compiled Python files
-- `.vscode/` — Local editor settings
+## Important Notes
 
-## Security
+- The application supports text-based PDFs and DOCX files.
+- Scanned or image-only PDFs may require OCR to extract text.
+- Resume feedback is based on the information provided in the resume and Job Description.
+- AI-generated results should be reviewed before making career decisions.
+- OpenAI API usage may incur charges depending on the model and usage.
 
-- Store API keys in `.env`.
-- Never upload `.env` or API credentials to GitHub.
-- Keep the virtual environment local.
+## Project Status
 
-## Development Status
+**Implementation:** Complete code drafted in `app.py`.
 
-**Completed so far:** Initial project setup, Git initialization, environment configuration code, report section definitions, and PDF/DOCX text extraction logic.
+**Testing status:** Execution and end-to-end testing are not yet confirmed.
 
-**In progress:** Building the complete resume analysis workflow.
-
-The LLM analysis, readable report generation, Streamlit interface, and Markdown report download are not yet implemented.
-
+**Future improvements:** Add automated tests, improve error handling, support OCR for scanned PDFs, and refine the user interface.
