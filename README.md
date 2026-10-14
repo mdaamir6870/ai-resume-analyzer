@@ -32,7 +32,7 @@ The AI Resume Analyzer accepts a resume in PDF or DOCX format and a Job Descript
 
 ## Application Workflow
 
-### Step 1: Resume Text Extraction
+### Step 1: Resume Text Extraction.
 
 The `extract_resume_text()` function reads uploaded PDF or DOCX files and converts their text into a single string for analysis.
 
